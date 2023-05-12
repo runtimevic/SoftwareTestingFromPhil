@@ -30,4 +30,4 @@ jobs:
       with:
           domain: ${{github.repository_owner}}          
     - name: Publish Results to Testspace
-      run: testspace [${{ matrix.os}}]./testcontent/*.xml
+      run: testspace "path/to/*.xml"
