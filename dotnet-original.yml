@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: PruebasUnitarias
+name: channel9-pj
 
 on:
   push:
@@ -24,18 +24,10 @@ jobs:
       run: dotnet restore ./src/SoftwareTesting.sln
     - name: Build
       run: dotnet build ./src/SoftwareTesting.sln --no-restore
-    - name: Test1
+    - name: Test
       run: dotnet test ./src/XUnitExamples/XUnitExamples.csproj --no-build --verbosity normal --logger "trx;LogFileName=xtests.trx"
-    - name: Test2
-      run: dotnet test ./src/XUnitExamples/XUnitExamples.csproj --no-build --verbosity normal --logger "xml;LogFileName=xtests.xml"      
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         trx_files: "/home/runner/work/SoftwareTestingFromPhil/SoftwareTestingFromPhil/src/XUnitExamples/TestResults/xtests.trx"
-    - name: Publish Test Results setup-testspace@v1
-      uses: testspace-com/setup-testspace@v1
-      with:
-        domain: ${{github.repository_owner}}           
-    - name: Publish Results to Testspace
-      run: testspace /home/runner/work/SoftwareTestingFromPhil/SoftwareTestingFromPhil/src/XUnitExamples/TestResults/xtests.xml
