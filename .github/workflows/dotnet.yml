@@ -25,12 +25,9 @@ jobs:
     - name: Build
       run: dotnet build ./src/SoftwareTesting.sln --no-restore
     - name: Test
-      run: dotnet test ./src/XUnitExamples/XUnitExamples.csproj --no-build --verbosity normal --logger "trx;LogFileName=xtests.trx"
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
+      run: dotnet test ./src/XUnitExamples/XUnitExamples.csproj --no-build --verbosity normal --logger "trx;LogFileName=xtests.trx"          
+    - uses: testspace-com/setup-testspace@v1
       with:
-        files: |
-          test-results/**/*.xml
-          test-results/**/*.trx
-          test-results/**/*.json
+          domain: ${{github.repository_owner}}          
+    - name: Publish Results to Testspace
+      run: testspace [${{ matrix.os}}]./testcontent/*.xml
